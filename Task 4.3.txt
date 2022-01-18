@@ -1,0 +1,72 @@
+Task 4.3
+
+Learning Goals: 
+- Identify the syntax of common SQL commands, including basic CRUD operations
+- Explain commonly used constraints for creating tables
+- Write SQL commands in PostgreSQL to answer some basic business questions
+
+-- Find titles that are less than 1.99
+
+SELECT *
+FROM film  
+WHERE rental_rate < 1.99
+
+-- Set release year for 'The Matrix' to 1999
+
+UPDATE film
+SET release_year = 1999
+WHERE title = 'The Matrix'
+
+-- Delete title 'The Avengers: End Game' from table
+
+DELETE
+FROM film
+WHERE title ='The Avengers:End Game'
+
+-- select and display all columns from the film table for only 10 records
+SELECT *
+FROM film
+LIMIT 10;
+
+-- rename title and description columns as 'movie_name' and 'movie_summary'
+
+SELECT title AS movie_name,
+       description AS movie_summary
+FROM film
+
+-- change 'film' table to 'movie'
+
+SELECT *
+FROM film AS movie
+
+-- Write a SELECT command to find out what film genres exist in the category table.
+
+SELECT *
+FROM category
+
+-- Write an INSERT statement to add the following genres to the category table: Thriller, Crime, Mystery, Romance, and War:
+
+INSERT INTO category (name)
+VALUES ('Thriller');
+INSERT INTO category (name)
+VALUES ('Crime');
+INSERT INTO category (name)
+VALUES ('Mystery');
+INSERT INTO category (name)
+VALUES ('Romance');
+INSERT INTO category (name)
+VALUES ('War')
+
+-- Write the SELECT statement to find the film_id for the movie African Egg. 
+-- Once you have the film_ID and category_ID, write an UPDATE command to change the category in the film_category table (not the category table).
+
+SELECT *
+FROM film
+WHERE title = 'African Egg'
+
+UPDATE film_category
+SET category_id = 17
+WHERE film_id = 5
+
+DELETE FROM category
+WHERE NAME = 'Mystery'
