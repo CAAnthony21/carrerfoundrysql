@@ -1,0 +1,164 @@
+4.5: Filtering Data
+
+Learning Goals
+-- Identify commonly used operators for filtering data
+-- Filter and order data using the WHERE and HAVING clauses
+-- Differentiate between the WHERE and HAVING clauses
+-- Explain CASE statements in SQL
+
+-- Write a query that locates all the info for the film 'Chamber Italian'
+
+SELECT *
+FROM film
+WHERE title = 'Chamber Italian'
+
+-- Write a query that displays all info for titles with a rental rate between 0.00 and 2.99
+
+SELECT *
+FROM film
+WHERE rental_rate BETWEEN 0.00 
+	AND 2.99
+ORDER BY rental_rate ASC
+
+-- Write a query that displays all titles that were last updated between 5/20/2013 and 5/30/2013 (Use BETWEEN operator)
+
+SELECT title,
+       last_update
+FROM film
+WHERE last_update BETWEEN '2013-05-20' 
+	AND '2013-05-30'
+
+-- Write a query that displays all titles with a PG rating and have a rental rate less than 2.00 (Use AND operator)
+
+SELECT title, rating, rental_rate
+FROM film
+WHERE rating = 'PG' 
+	AND rental_rate < 2.00
+
+-- Write a query that displays all titles with a rental rate that is greater than 2.00 using the NOT operator
+
+SELECT title, rating, rental_rate
+FROM film
+WHERE rating = 'PG' 
+	AND NOT rental_rate < 2.00
+
+-- Write a query that displays all titles with a PG rating or a rental rate of less than 2.00 (Use OR operator)
+
+SELECT title, rating, rental_rate
+FROM film
+WHERE rating = 'PG' 
+	OR rental_rate < 2.00
+ORDER BY rating
+
+-- Write a query that displays all titles with the word 'Italian' in the title (Use LIKE operator)
+
+SELECT title
+FROM film
+WHERE title LIKE '%Italian%'
+
+-- Write a query that displays all titles with a G, PG, and PG-13 rating
+
+SELECT *
+FROM film
+WHERE rating IN ('PG',
+                 'G',
+                 'PG-13')
+
+-- Write a query that shows the count of movies in each location. Label the COUNT column as 'count_of_movies'
+
+SELECT store_id,
+       COUNT(store_id) AS count_of_movies
+FROM inventory
+GROUP BY store_id
+ORDER BY count_of_movies DESC
+
+-- Write a query that only returns stores that have a movie count greater than 2300 titles (Use HAVING operator)
+
+SELECT store_id,
+       COUNT(store_id) AS count_of_movies
+FROM inventory
+GROUP BY store_id
+HAVING COUNT(store_id) > 2300
+ORDER BY count_of_movies DESC
+
+-- Write a case statement that turns a numerical value in language_id into a translated statement 
+
+SELECT film_id,
+       title,
+       rental_rate,
+       CASE
+           WHEN language_id = 1 THEN 'English'
+           WHEN language_id = 2 THEN 'Korean'
+           ELSE 'Unknown'
+       END AS movie_language
+FROM film
+
+-- Write a case statement that tells you if kids are allowed or not based on the films rating
+
+SELECT 	film_id, 
+		title, 
+		rating,
+		CASE 
+			WHEN rating = 'G' THEN 'Kids Allowed'
+			WHEN rating = 'NC-17' THEN 'Kids Not Allowed'
+			ELSE 'Parental Guidance Recommended'
+		END AS Kids_Allowed
+FROM film 
+ORDER BY Kids_Allowed, rating ASC
+
+-- Write a query that returns films with the word 'Uptown' in any position
+
+SELECT title
+FROM film
+WHERE title LIKE '%Uptown%'
+
+-- Write a query that returns films where the film length is more than 120 minutes and rental rate is more than 2.99
+
+SELECT 	title,
+	length,
+	rental_rate
+FROM film
+WHERE length > 120
+	AND rental_rate > 2.99
+ORDER BY length ASC
+
+-- Write a query that returns films where rental duration is between 3 and 7 days
+
+SELECT 	title,
+	rental_duration
+FROM film
+WHERE rental_duration BETWEEN 3 AND 7
+
+-- Write a query that returns films with a replacement cost less than 14.99
+
+SELECT 	title,
+	replacement_cost
+FROM film
+WHERE replacement_cost > 14.99
+ORDER BY replacement_cost ASC
+
+-- Write a query that returns films that are rated either G or PG
+
+SELECT 	title,
+	rating
+FROM film
+WHERE 	rating = 'G' 
+	OR rating =  'PG'
+ORDER BY rating
+
+-- Write a query that looks at films rated G or PG and find the average rental rate for each rating as well as max and min rental duration 
+
+SELECT  rating AS "Movie Rating",
+	count(title) AS "Count of Movies",
+	avg(rental_rate) AS "Average Rental Rate",
+	min(rental_duration) AS "Minimum Rental Duration",
+	max(rental_duration) AS "Max Rental Duration"
+FROM film
+WHERE 	rating = 'G' 
+	OR rating =  'PG'
+GROUP BY rating
+ORDER BY 	avg(rental_rate),
+		max(rental_duration),
+		min(rental_duration)
+
+
